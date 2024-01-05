@@ -87,9 +87,9 @@ def format_cloudwatch_alarm(message: Dict[str, Any], region: str) -> Dict[str, A
     cloudwatch_url = get_service_url(region=region, service="cloudwatch")
     alarm_name = message["AlarmName"]
     if os.environ.get("NO_INLINE_CODE_FORMATTING", "False") == "True":
-      FieldQuote = "`"
-    else:
       FieldQuote = ""
+    else:
+      FieldQuote = "`"
 
 
     return {
@@ -145,9 +145,9 @@ def format_guardduty_finding(message: Dict[str, Any], region: str) -> Dict[str, 
     """
 
     if os.environ.get("NO_INLINE_CODE_FORMATTING", "False") == "True":
-      FieldQuote = "`"
-    else:
       FieldQuote = ""
+    else:
+      FieldQuote = "`"
     guardduty_url = get_service_url(region=region, service="guardduty")
     detail = message["detail"]
     service = detail.get("service", {})
@@ -224,9 +224,9 @@ def format_aws_health(message: Dict[str, Any], region: str) -> Dict[str, Any]:
     """
 
     if os.environ.get("NO_INLINE_CODE_FORMATTING", "False") == "True":
-      FieldQuote = "`"
-    else:
       FieldQuote = ""
+    else:
+      FieldQuote = "`"
     aws_health_url = (
         f"https://phd.aws.amazon.com/phd/home?region={region}#/dashboard/open-issues"
     )
@@ -288,11 +288,6 @@ def format_default(
     :params message: SNS message body containing message/event
     :returns: formatted Slack message payload
     """
-    if os.environ.get("NO_INLINE_CODE_FORMATTING", "False") == "True":
-      FieldQuote = "`"
-    else:
-      FieldQuote = ""
-
     attachments = {
         "fallback": "A new message",
         "text": "AWS notification",
