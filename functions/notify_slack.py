@@ -96,7 +96,7 @@ def format_cloudwatch_alarm(message: Dict[str, Any], region: str) -> Dict[str, A
         "color": CloudWatchAlarmState[message["NewStateValue"]].value,
         "fallback": f"Alarm {alarm_name} triggered",
         "fields": [
-            {"title": "Alarm Name", "value": f"{FieldQuote}{alarm_name}{FieldQuote}", "short": True},
+            {"title": "Alarm Name", "value": f"`{alarm_name}`", "short": True},
             {
                 "title": "Alarm Description",
                 "value": f"{FieldQuote}{message['AlarmDescription']}{FieldQuote}",
@@ -109,12 +109,12 @@ def format_cloudwatch_alarm(message: Dict[str, Any], region: str) -> Dict[str, A
             },
             {
                 "title": "Old State",
-                "value": f"{FieldQuote}{message['OldStateValue']}{FieldQuote}",
+                "value": f"`{message['OldStateValue']}`",
                 "short": True,
             },
             {
                 "title": "Current State",
-                "value": f"{FieldQuote}{message['NewStateValue']}{FieldQuote}",
+                "value": f"`{message['NewStateValue']}`",
                 "short": True,
             },
             {
@@ -184,11 +184,11 @@ def format_guardduty_finding(message: Dict[str, Any], region: str) -> Dict[str, 
                 "value": f"{FieldQuote}{service['eventLastSeen']}{FieldQuote}",
                 "short": True,
             },
-            {"title": "Severity", "value": f"{FieldQuote}{severity}{FieldQuote}", "short": True},
-            {"title": "Account ID", "value": f"{FieldQuote}{detail['accountId']}{FieldQuote}", "short": True},
+            {"title": "Severity", "value": f"`{severity}`", "short": True},
+            {"title": "Account ID", "value": f"`{detail['accountId']}`", "short": True},
             {
                 "title": "Count",
-                "value": f"{FieldQuote}{service['count']}{FieldQuote}",
+                "value": f"`{service['count']}`",
                 "short": True,
             },
             {
@@ -239,15 +239,15 @@ def format_aws_health(message: Dict[str, Any], region: str) -> Dict[str, Any]:
         "text": f"New AWS Health Event for {service}",
         "fallback": f"New AWS Health Event for {service}",
         "fields": [
-            {"title": "Affected Service", "value": f"{FieldQuote}{service}{FieldQuote}", "short": True},
+            {"title": "Affected Service", "value": f"`{service}`", "short": True},
             {
                 "title": "Affected Region",
-                "value": f"{FieldQuote}{message.get('region')}{FieldQuote}",
+                "value": f"`{message.get('region')}`",
                 "short": True,
             },
             {
                 "title": "Code",
-                "value": f"{FieldQuote}{detail.get('eventTypeCode')}{FieldQuote}",
+                "value": f"`{detail.get('eventTypeCode')}`",
                 "short": False,
             },
             {
@@ -257,17 +257,17 @@ def format_aws_health(message: Dict[str, Any], region: str) -> Dict[str, Any]:
             },
             {
                 "title": "Affected Resources",
-                "value": f"{FieldQuote}{', '.join(resources)}{FieldQuote}",
+                "value": f"`{', '.join(resources)}`",
                 "short": False,
             },
             {
                 "title": "Start Time",
-                "value": f"{FieldQuote}{detail.get('startTime', '<unknown>')}{FieldQuote}",
+                "value": f"`{detail.get('startTime', '<unknown>')}`",
                 "short": True,
             },
             {
                 "title": "End Time",
-                "value": f"{FieldQuote}{detail.get('endTime', '<unknown>')}{FieldQuote}",
+                "value": f"`{detail.get('endTime', '<unknown>')}`",
                 "short": True,
             },
             {
@@ -304,7 +304,7 @@ def format_default(
     if type(message) is dict:
         for k, v in message.items():
             value = f"{json.dumps(v)}" if isinstance(v, (dict, list)) else str(v)
-            fields.append({"title": k, "value": f"{FieldQuote}{value}{FieldQuote}", "short": len(value) < 25})
+            fields.append({"title": k, "value": f"`{value}`", "short": len(value) < 25})
     else:
         fields.append({"value": message, "short": False})
 
