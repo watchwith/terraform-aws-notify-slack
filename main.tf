@@ -107,6 +107,7 @@ module "lambda" {
     SLACK_USERNAME    = var.slack_username
     SLACK_EMOJI       = var.slack_emoji
     LOG_EVENTS        = var.log_events ? "True" : "False"
+    NO_INLINE_CODE_FORMATTING = var.slack_inline_code_formatting ? "False" : "True"
   }
 
   create_role               = var.lambda_role == ""

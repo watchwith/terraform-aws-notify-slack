@@ -86,30 +86,35 @@ def format_cloudwatch_alarm(message: Dict[str, Any], region: str) -> Dict[str, A
 
     cloudwatch_url = get_service_url(region=region, service="cloudwatch")
     alarm_name = message["AlarmName"]
+    if os.environ.get("NO_INLINE_CODE_FORMATTING", "False") == "True":
+      FieldQuote = "`"
+    else:
+      FieldQuote = ""
+
 
     return {
         "color": CloudWatchAlarmState[message["NewStateValue"]].value,
         "fallback": f"Alarm {alarm_name} triggered",
         "fields": [
-            {"title": "Alarm Name", "value": f"`{alarm_name}`", "short": True},
+            {"title": "Alarm Name", "value": f"{FieldQuote}{alarm_name}{FieldQuote}", "short": True},
             {
                 "title": "Alarm Description",
-                "value": f"`{message['AlarmDescription']}`",
+                "value": f"{FieldQuote}{message['AlarmDescription']}{FieldQuote}",
                 "short": False,
             },
             {
                 "title": "Alarm reason",
-                "value": f"`{message['NewStateReason']}`",
+                "value": f"{FieldQuote}{message['NewStateReason']}{FieldQuote}",
                 "short": False,
             },
             {
                 "title": "Old State",
-                "value": f"`{message['OldStateValue']}`",
+                "value": f"{FieldQuote}{message['OldStateValue']}{FieldQuote}",
                 "short": True,
             },
             {
                 "title": "Current State",
-                "value": f"`{message['NewStateValue']}`",
+                "value": f"{FieldQuote}{message['NewStateValue']}{FieldQuote}",
                 "short": True,
             },
             {
@@ -139,6 +144,10 @@ def format_guardduty_finding(message: Dict[str, Any], region: str) -> Dict[str, 
     :returns: formatted Slack message payload
     """
 
+    if os.environ.get("NO_INLINE_CODE_FORMATTING", "False") == "True":
+      FieldQuote = "`"
+    else:
+      FieldQuote = ""
     guardduty_url = get_service_url(region=region, service="guardduty")
     detail = message["detail"]
     service = detail.get("service", {})
@@ -157,29 +166,29 @@ def format_guardduty_finding(message: Dict[str, Any], region: str) -> Dict[str, 
         "fields": [
             {
                 "title": "Description",
-                "value": f"`{detail['description']}`",
+                "value": f"{FieldQuote}{detail['description']}{FieldQuote}",
                 "short": False,
             },
             {
                 "title": "Finding Type",
-                "value": f"`{detail['type']}`",
+                "value": f"{FieldQuote}{detail['type']}{FieldQuote}",
                 "short": False,
             },
             {
                 "title": "First Seen",
-                "value": f"`{service['eventFirstSeen']}`",
+                "value": f"{FieldQuote}{service['eventFirstSeen']}{FieldQuote}",
                 "short": True,
             },
             {
                 "title": "Last Seen",
-                "value": f"`{service['eventLastSeen']}`",
+                "value": f"{FieldQuote}{service['eventLastSeen']}{FieldQuote}",
                 "short": True,
             },
-            {"title": "Severity", "value": f"`{severity}`", "short": True},
-            {"title": "Account ID", "value": f"`{detail['accountId']}`", "short": True},
+            {"title": "Severity", "value": f"{FieldQuote}{severity}{FieldQuote}", "short": True},
+            {"title": "Account ID", "value": f"{FieldQuote}{detail['accountId']}{FieldQuote}", "short": True},
             {
                 "title": "Count",
-                "value": f"`{service['count']}`",
+                "value": f"{FieldQuote}{service['count']}{FieldQuote}",
                 "short": True,
             },
             {
@@ -214,6 +223,10 @@ def format_aws_health(message: Dict[str, Any], region: str) -> Dict[str, Any]:
     :returns: formatted Slack message payload
     """
 
+    if os.environ.get("NO_INLINE_CODE_FORMATTING", "False") == "True":
+      FieldQuote = "`"
+    else:
+      FieldQuote = ""
     aws_health_url = (
         f"https://phd.aws.amazon.com/phd/home?region={region}#/dashboard/open-issues"
     )
@@ -226,35 +239,35 @@ def format_aws_health(message: Dict[str, Any], region: str) -> Dict[str, Any]:
         "text": f"New AWS Health Event for {service}",
         "fallback": f"New AWS Health Event for {service}",
         "fields": [
-            {"title": "Affected Service", "value": f"`{service}`", "short": True},
+            {"title": "Affected Service", "value": f"{FieldQuote}{service}{FieldQuote}", "short": True},
             {
                 "title": "Affected Region",
-                "value": f"`{message.get('region')}`",
+                "value": f"{FieldQuote}{message.get('region')}{FieldQuote}",
                 "short": True,
             },
             {
                 "title": "Code",
-                "value": f"`{detail.get('eventTypeCode')}`",
+                "value": f"{FieldQuote}{detail.get('eventTypeCode')}{FieldQuote}",
                 "short": False,
             },
             {
                 "title": "Event Description",
-                "value": f"`{detail['eventDescription'][0]['latestDescription']}`",
+                "value": f"{FieldQuote}{detail['eventDescription'][0]['latestDescription']}{FieldQuote}",
                 "short": False,
             },
             {
                 "title": "Affected Resources",
-                "value": f"`{', '.join(resources)}`",
+                "value": f"{FieldQuote}{', '.join(resources)}{FieldQuote}",
                 "short": False,
             },
             {
                 "title": "Start Time",
-                "value": f"`{detail.get('startTime', '<unknown>')}`",
+                "value": f"{FieldQuote}{detail.get('startTime', '<unknown>')}{FieldQuote}",
                 "short": True,
             },
             {
                 "title": "End Time",
-                "value": f"`{detail.get('endTime', '<unknown>')}`",
+                "value": f"{FieldQuote}{detail.get('endTime', '<unknown>')}{FieldQuote}",
                 "short": True,
             },
             {
@@ -275,6 +288,10 @@ def format_default(
     :params message: SNS message body containing message/event
     :returns: formatted Slack message payload
     """
+    if os.environ.get("NO_INLINE_CODE_FORMATTING", "False") == "True":
+      FieldQuote = "`"
+    else:
+      FieldQuote = ""
 
     attachments = {
         "fallback": "A new message",
@@ -287,7 +304,7 @@ def format_default(
     if type(message) is dict:
         for k, v in message.items():
             value = f"{json.dumps(v)}" if isinstance(v, (dict, list)) else str(v)
-            fields.append({"title": k, "value": f"`{value}`", "short": len(value) < 25})
+            fields.append({"title": k, "value": f"{FieldQuote}{value}{FieldQuote}", "short": len(value) < 25})
     else:
         fields.append({"value": message, "short": False})
 

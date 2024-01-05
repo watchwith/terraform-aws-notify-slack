@@ -144,6 +144,12 @@ variable "slack_emoji" {
   default     = ":aws:"
 }
 
+variable "slack_inline_code_formatting" {
+  description = "Format the fields in the slack message with inline-code (`) formatting"
+  type        = bool
+  default     = true
+}
+
 variable "kms_key_arn" {
   description = "ARN of the KMS key used for decrypting slack webhook url"
   type        = string
