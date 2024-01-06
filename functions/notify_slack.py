@@ -119,7 +119,7 @@ def format_cloudwatch_alarm(message: Dict[str, Any], region: str) -> Dict[str, A
             },
             {
                 "title": "Link to Alarm",
-                "value": f"{cloudwatch_url}#alarmsV2:alarm/{urllib.parse.quote(alarm_name, safe="")}",
+                "value": f"{cloudwatch_url}#alarmsV2:alarm/{urllib.parse.quote(alarm_name, safe='')}",
                 "short": False,
             },
         ],
