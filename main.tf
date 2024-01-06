@@ -80,7 +80,7 @@ resource "aws_sns_topic_subscription" "sns_notify_slack" {
 
 module "lambda" {
   source  = "terraform-aws-modules/lambda/aws"
-  version = "3.2.0"
+  version = "6.5.0"
 
   create = var.create
 
@@ -140,11 +140,14 @@ module "lambda" {
 
   store_on_s3 = var.lambda_function_store_on_s3
   s3_bucket   = var.lambda_function_s3_bucket
+  s3_object_tags = var.s3_object_tags
+  s3_object_tags_only = true
 
   vpc_subnet_ids         = var.lambda_function_vpc_subnet_ids
   vpc_security_group_ids = var.lambda_function_vpc_security_group_ids
 
-  tags = merge(var.tags, var.lambda_function_tags)
+  tags = var.tags
+  function_tags = var.lambda_function_tags
 
   depends_on = [aws_cloudwatch_log_group.lambda]
 }

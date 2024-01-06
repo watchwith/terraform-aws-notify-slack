@@ -252,6 +252,12 @@ variable "lambda_function_s3_bucket" {
   default     = null
 }
 
+variable "s3_object_tags" {
+  description = "Tags for the S3 objects"
+  type        = map(string)
+  default     = {}
+}
+
 variable "lambda_function_ephemeral_storage_size" {
   description = "Amount of ephemeral storage (/tmp) in MB your Lambda Function can use at runtime. Valid value between 512 MB to 10,240 MB (10 GB)."
   type        = number
